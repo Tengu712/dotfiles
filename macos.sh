@@ -11,3 +11,6 @@ copy_file() {
 	cp "$src" "$dst"
 	echo "copied $src -> $dst"
 }
+
+copy_file .zsh_prompt
+copy_file .zsh_aliases

@@ -1,0 +1,39 @@
+# Utils
+function tc() {
+	tee >(pbcopy)
+}
+
+# Git
+alias gs='git status'
+alias gl='git log'
+alias ga='git add -A'
+alias gm='git commit -m'
+alias gpush='git push origin HEAD'
+alias groot='git commit --allow-empty -m "root commit"'
+
+# Vim
+vf() {
+	local result
+	result=$(fzf --preview "cat {}")
+	[ -z "$result" ] && return
+
+	print -sr -- vim "$result"
+	vim "$result"
+}
+vg() {
+	local result
+	result=$(rg --line-number --no-heading "" | fzf --delimiter : --preview "cat {1}")
+	[ -z "$result" ] && return
+
+	local file
+	local line
+	file=$(echo "$result" | cut -d: -f1)
+	line=$(echo "$result" | cut -d: -f2)
+
+	print -sr -- vim +"$line" "$file"
+	vim +"$line" "$file"
+}
+
+# Docker
+alias dprune='docker system prune'
+alias dcx='docker compose exec'
