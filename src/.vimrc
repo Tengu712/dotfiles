@@ -1,0 +1,30 @@
+" Settings
+"" General
+set clipboard+=unnamed
+set cursorline
+
+"" Syntax highlight
+syntax on
+filetype on
+
+"" Show special characters
+set list
+set listchars=tab:>-,eol:$,nbsp:_
+highlight SpecialKey ctermfg=darkgray guifg=#555555
+highlight NonText ctermfg=darkgray guifg=#555555
+
+" Bindings
+inoremap <silent> jj <ESC>
+
+" Commands
+function! FzfEdit()
+	let tmp = tempname()
+	silent execute '!fzf --preview "cat {}" > ' . shellescape(tmp)
+	redraw!
+	let lines = readfile(tmp)
+	call delete(tmp)
+	if !empty(lines)
+		execute 'edit ' . fnameescape(lines[0])
+	endif
+endfunction
+command! VF call FzfEdit()
