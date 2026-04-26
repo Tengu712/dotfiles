@@ -13,5 +13,5 @@ copy_file() {
 }
 
 copy_file .zsh_prompt
-copy_file .zsh_aliases
+copy_file .zshenv
 copy_file .vimrc

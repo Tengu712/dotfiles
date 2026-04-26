@@ -13,13 +13,16 @@ set listchars=tab:>-,eol:$,nbsp:_
 highlight SpecialKey ctermfg=darkgray guifg=#555555
 highlight NonText ctermfg=darkgray guifg=#555555
 
+"" Aliases
+let $BASH_ENV = "~/.zsh_aliases"
+
 " Bindings
 inoremap <silent> jj <ESC>
 
 " Commands
-function! FzfEdit()
+function! FzfEdit(cmd)
 	let tmp = tempname()
-	silent execute '!fzf --preview "cat {}" > ' . shellescape(tmp)
+	silent execute '!' . a:cmd . ' > ' . shellescape(tmp)
 	redraw!
 	let lines = readfile(tmp)
 	call delete(tmp)
@@ -27,4 +30,5 @@ function! FzfEdit()
 		execute 'edit ' . fnameescape(lines[0])
 	endif
 endfunction
-command! VF call FzfEdit()
+command! VF call FzfEdit('af')
+command! VG call FzfEdit('ag')

@@ -10,10 +10,6 @@ Use zsh and install following commands:
 Add the following code to `.zshrc`:
 
 ```sh
-if [ -f ~/.zsh_aliases ]; then
-        source ~/.zsh_aliases
-fi
-
 if [ -f ~/.zsh_prompt ]; then
         source ~/.zsh_prompt
 fi
