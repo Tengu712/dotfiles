@@ -5,6 +5,7 @@
 Use zsh and install following commands:
 
 - fzf
+- lazygit
 - ripgrep
 
 Add the following code to `.zshrc`:
