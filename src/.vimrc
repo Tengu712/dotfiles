@@ -32,3 +32,6 @@ function! FzfEdit(cmd)
 endfunction
 command! VF call FzfEdit('af')
 command! VG call FzfEdit('ag')
+
+" Settings for each languages
+autocmd FileType rust setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
