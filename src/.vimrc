@@ -20,9 +20,9 @@ let $BASH_ENV = "~/.zsh_aliases"
 inoremap <silent> jj <ESC>
 
 " Commands
-function! FzfEdit(cmd)
+function! AfEdit()
 	let tmp = tempname()
-	silent execute '!' . a:cmd . ' > ' . shellescape(tmp)
+	silent execute '!af > ' . shellescape(tmp)
 	redraw!
 	let lines = readfile(tmp)
 	call delete(tmp)
@@ -30,8 +30,21 @@ function! FzfEdit(cmd)
 		execute 'edit ' . fnameescape(lines[0])
 	endif
 endfunction
-command! VF call FzfEdit('af')
-command! VG call FzfEdit('ag')
+command! VF call AfEdit()
+function! AgEdit()
+	let tmp = tempname()
+	silent execute '!ag > ' . shellescape(tmp)
+	redraw!
+	let lines = readfile(tmp)
+	call delete(tmp)
+	if !empty(lines)
+		let parts = split(lines[0], ':')
+		let filename = parts[0]
+		let lnum = parts[1]
+		execute 'edit +' . lnum . ' ' . fnameescape(filename)
+	endif
+endfunction
+command! VG call AgEdit()
 
 " Settings for each languages
 autocmd FileType rust setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
