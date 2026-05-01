@@ -1,4 +1,7 @@
 # Utils
+function rbg() {
+	"$@" > /dev/null 2>&1 &
+}
 function tc() {
 	tee >(pbcopy)
 }
