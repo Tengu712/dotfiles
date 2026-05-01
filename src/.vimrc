@@ -18,6 +18,11 @@ let $BASH_ENV = "~/.zsh_aliases"
 
 " Bindings
 inoremap <silent> jj <ESC>
+inoremap ( ()<Left>
+inoremap { {}<Left>
+inoremap [ []<Left>
+inoremap " ""<Left>
+inoremap ' ''<Left>
 
 " Commands
 function! AfEdit()
