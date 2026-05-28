@@ -26,6 +26,9 @@ alias gm='git commit -m'
 alias gpush='git push origin HEAD'
 alias groot='git commit --allow-empty -m "root commit"'
 
+# Lazygit
+alias lg='lazygit'
+
 # Vim
 vf() {
 	local result
