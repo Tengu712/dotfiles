@@ -6,7 +6,14 @@ function tc() {
 	tee >(pbcopy)
 }
 function af() {
-	fzf --preview "cat {}"
+	fd --type f \
+		--exclude .git \
+		--exclude build \
+		--exclude target \
+		--exclude .opam \
+		--exclude _opam \
+		--exclude _build \
+	| fzf --preview "cat {}"
 }
 function ag() {
 	rg --line-number --no-heading "" \
