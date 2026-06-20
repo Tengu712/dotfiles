@@ -6,7 +6,7 @@ function tc() {
 	tee >(pbcopy)
 }
 function af() {
-	fd --type f \
+	fd --hidden --type f \
 		--exclude .git \
 		--exclude build \
 		--exclude target \
@@ -16,12 +16,30 @@ function af() {
 	| fzf --preview "cat {}"
 }
 function ag() {
-	rg --line-number --no-heading "" \
+	rg --hidden --line-number --no-heading --color=never --no-messages \
+		--glob '!.git/**' \
+		--glob '!build/**' \
+		--glob '!target/**' \
+		--glob '!.opam/**' \
+		--glob '!_opam/**' \
+		--glob '!_build/**' \
+		"" \
 	| fzf \
 		--delimiter : \
 		--with-nth 3.. \
-		--preview 'awk -v n={2} '"'"'NR==n{print "\033[7m" $0 "\033[m"; next} {print}'"'"' {1}' \
-		--preview-window 'right,+{2}-10' \
+		--preview '
+			file={1}
+			line={2}
+			start=$((line > 200 ? line - 200 : 1))
+			end=$((line + 200))
+			bat --style=numbers --color=always \
+				--highlight-line "$line" \
+				--line-range "$start:$end" \
+				-- "$file"
+		' \
+		--preview-window 'right,border,+{2}/2' \
+		--preview-label ' ' \
+		--bind 'focus:transform-preview-label:echo " {1} "' \
 	| cut -d: -f1,2
 }
 
