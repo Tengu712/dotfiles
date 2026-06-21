@@ -13,7 +13,8 @@ function af() {
 		--exclude .opam \
 		--exclude _opam \
 		--exclude _build \
-	| fzf --preview "cat {}"
+		--exclude node_modules \
+	| fzf --preview "bat {}"
 }
 function ag() {
 	rg --hidden --line-number --no-heading --color=never --no-messages \
@@ -23,6 +24,7 @@ function ag() {
 		--glob '!.opam/**' \
 		--glob '!_opam/**' \
 		--glob '!_build/**' \
+		--glob '!node_modules/**' \
 		"" \
 	| fzf \
 		--delimiter : \
