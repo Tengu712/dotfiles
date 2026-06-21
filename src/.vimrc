@@ -53,4 +53,4 @@ command! VG call AgEdit()
 command! LN echo line('.')
 
 " Settings for each languages
-autocmd FileType rust setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
+autocmd FileType rust setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4 nolist
