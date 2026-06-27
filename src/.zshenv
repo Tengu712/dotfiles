@@ -85,3 +85,6 @@ alias dcb='docker compose build'
 alias dcu='docker compose up'
 alias dcd='docker compose down'
 alias dcx='docker compose exec'
+
+# Nix
+ndc() { nix develop --command "$@"; }
