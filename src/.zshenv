@@ -52,6 +52,7 @@ alias ga='git add -A'
 alias gm='git commit -m'
 alias gpush='git push origin HEAD'
 alias groot='git commit --allow-empty -m "root commit"'
+alias gsuir='git submodule update --init --recursive'
 
 # Lazygit
 alias lg='lazygit'
