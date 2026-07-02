@@ -2,6 +2,7 @@
 "" General
 set clipboard+=unnamed
 set cursorline
+set re=0
 
 "" Syntax highlight
 syntax on
