@@ -49,6 +49,7 @@ inoremap { {}<Left>
 inoremap [ []<Left>
 inoremap " ""<Left>
 inoremap ' ''<Left>
+nnoremap f /
 
 " Commands
 function! AfEdit()
