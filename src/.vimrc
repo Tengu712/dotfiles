@@ -3,6 +3,9 @@
 set clipboard+=unnamed
 set cursorline
 set re=0
+set tabstop=4
+set shiftwidth=4
+let mapleader = "\<Space>"
 
 "" Syntax highlight
 syntax on
@@ -14,7 +17,36 @@ set listchars=tab:>-,eol:$,nbsp:_
 highlight SpecialKey ctermfg=darkgray guifg=#555555
 highlight NonText ctermfg=darkgray guifg=#555555
 
-" Row Jumper
+"" Color Changes
+highlight Comment ctermfg=gray guifg=#808080
+highlight SpecialComment ctermfg=gray guifg=#808080
+highlight vimLineComment ctermfg=gray guifg=#808080
+
+"" Bindings
+inoremap <silent> jj <ESC>
+inoremap ( ()<Left>
+inoremap { {}<Left>
+inoremap [ []<Left>
+inoremap < <><Left>
+inoremap " ""<Left>
+inoremap ' ''<Left>
+inoremap ` ``<Left>
+nnoremap f /
+inoremap <expr> <BS> <SID>smart_bs()
+function! s:smart_bs()
+	let l:pair = strpart(getline('.'), col('.') - 2, 2)
+	if col('.') > 1 && index(['()', '{}', '[]', '<>', '""', "''", '``'], l:pair) >= 0
+		return "\<Del>"
+	else
+		return "\<BS>"
+	endif
+endfunction
+
+"" Settings for each languages
+autocmd FileType rust setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4 nolist
+autocmd FileType swift setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4 nolist
+
+" Line Jumper
 let s:jump_chars = []
 for s:c1 in range(97, 122)
 	for s:c2 in range(97, 122)
@@ -90,15 +122,6 @@ function! ToggleNetrwMinimize()
 endfunction
 command! T call ToggleNetrwMinimize()
 
-" Bindings
-inoremap <silent> jj <ESC>
-inoremap ( ()<Left>
-inoremap { {}<Left>
-inoremap [ []<Left>
-inoremap " ""<Left>
-inoremap ' ''<Left>
-nnoremap f /
-
 " Commands
 function! AfEdit()
 	let tmp = tempname()
@@ -126,10 +149,6 @@ function! AgEdit()
 endfunction
 command! VG call AgEdit()
 command! LN echo line('.')
-
-" Settings for each languages
-autocmd FileType rust setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4 nolist
-autocmd FileType swift setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4 nolist
 
 " =========================================================================== "
 "     Lisp                                                                    "
