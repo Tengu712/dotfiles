@@ -6,8 +6,9 @@
 set clipboard+=unnamed
 set cursorline
 set re=0
-set tabstop=4
 set shiftwidth=4
+set tabstop=4
+set softtabstop=4
 let mapleader = "\<Space>"
 
 " Syntax highlight
@@ -46,8 +47,9 @@ function! s:smart_bs()
 endfunction
 
 " Settings for each languages
-autocmd FileType rust setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4 nolist
-autocmd FileType swift setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4 nolist
+autocmd FileType rust setlocal expandtab nolist
+autocmd FileType swift setlocal expandtab nolist
+autocmd FileType go setlocal nolist
 
 " ============================================================================ "
 "     Line Jumper                                                              "

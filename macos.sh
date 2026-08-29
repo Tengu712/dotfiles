@@ -29,7 +29,7 @@ copy_file_util .zshenv
 copy_file_util .vimrc
 
 vim -es -c 'redir! > /tmp/vim-config-path.txt' -c 'echo split(&runtimepath, ",")[0]' -c 'redir END' -c 'quit!' < /dev/null
-copy_directory "$DOTFILES_DIR/src/vim/swank-client" "$(cat /tmp/vimpath.txt | xargs)/swank-client"
+copy_directory "$DOTFILES_DIR/src/vim/swank-client" "$(cat /tmp/vim-config-path.txt | xargs)/swank-client"
 rm /tmp/vim-config-path.txt
 
 copy_file "$DOTFILES_DIR/src/lazygit-config.yml" "$(lazygit --print-config-dir)/config.yml"
