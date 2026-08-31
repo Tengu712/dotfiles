@@ -6,9 +6,9 @@ import subprocess
 import sys
 from pathlib import Path
 
-SYSTEM       = platform.system()
-DOTFILES_DIR = Path(__file__).resolve().parent
-HOME         = Path.home()
+SYSTEM   = platform.system()
+HOME_DIR = Path.home()
+SRC_DIR  = Path(__file__).resolve().parent / 'src'
 
 if SYSTEM == 'Linux':
 	print('Linux is unsupported')
@@ -30,7 +30,7 @@ def copy_file(src, dst):
 	print(f'copied {src} -> {dst}')
 
 def copy_file_to_home(path):
-	copy_file(DOTFILES_DIR / 'src' / path, HOME / path)
+	copy_file(SRC_DIR / path, HOME_DIR / path)
 
 # =========================================================================== #
 #     terminal                                                                #
@@ -45,7 +45,7 @@ def apply_terminal_windows():
 		print('LOCALAPPDATA not defined')
 		sys.exit(1)
 
-	src_path = DOTFILES_DIR / 'src' / 'win-term-settings.json'
+	src_path = SRC_DIR / 'win-term-settings.json'
 	dst_path = Path(local_appdata) / 'Packages' / 'Microsoft.WindowsTerminal_8wekyb3d8bbwe' / 'LocalState' / 'settings.json'
 	src_path = str(src_path)
 	dst_path = str(dst_path)
@@ -64,7 +64,7 @@ def apply_terminal_windows():
 		settings = f.read()
 		settings = settings.replace('DEFAULT_PROFILE_GUID', default_profile_guid)
 		settings = settings.replace('CMD_GUID',             cmd_guid)
-		settings = settings.replace('SETUP_CMD_PATH',       str(HOME / 'setup.cmd').replace('\\', '\\\\'))
+		settings = settings.replace('SETUP_CMD_PATH',       str(HOME_DIR / 'setup.cmd').replace('\\', '\\\\'))
 
 	with open(dst_path, 'w', encoding='UTF-8') as f:
 		f.write(settings)
@@ -92,7 +92,7 @@ def apply_vim():
 		vim_rtp = Path(vim_rtp)
 
 		copy_directory(
-			DOTFILES_DIR / 'src' / 'vim' / 'swank-client',
+			SRC_DIR / 'vim' / 'swank-client',
 			vim_rtp / 'swank-client',
 		)
 
@@ -114,7 +114,7 @@ def apply_lazygit():
 	lazygit_cfg = Path(lazygit_cfg)
 
 	copy_file(
-		DOTFILES_DIR / 'src' / 'lazygit-config.yml',
+		SRC_DIR / 'lazygit-config.yml',
 		lazygit_cfg / 'config.yml',
 	)
 
