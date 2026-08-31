@@ -1,15 +1,18 @@
 # dotfiles
 
-## macOS
+Use zsh on macOS, cmd on Windows and install following commands:
 
-Use zsh and install following commands:
-
-- bat
-- fzf
 - lazygit
-- ripgrep
+- python
+- vim
 
-Add the following code to `.zshrc`:
+Run `apply.py` with Python:
+
+```
+python apply.py
+```
+
+On macOS, add the following code to `.zshrc`:
 
 ```sh
 if [ -f ~/.zsh_prompt ]; then

@@ -1,0 +1,156 @@
+{
+    "$help": "https://aka.ms/terminal-documentation",
+    "$schema": "https://aka.ms/terminal-profiles-schema",
+    "actions": [],
+    "copyFormatting": "none",
+    "copyOnSelect": false,
+    "defaultProfile": "DEFAULT_PROFILE_GUID",
+    "keybindings":
+    [
+        {
+            "id": "Terminal.ClearBuffer",
+            "keys": "ctrl+shift+l"
+        },
+        {
+            "id": "Terminal.ClosePane",
+            "keys": "alt+w"
+        },
+        {
+            "id": "Terminal.DuplicatePaneDown",
+            "keys": "alt+shift+d"
+        },
+        {
+            "id": "Terminal.DuplicatePaneRight",
+            "keys": "alt+d"
+        },
+        {
+            "id": "Terminal.FindText",
+            "keys": "ctrl+shift+f"
+        },
+        {
+            "id": "Terminal.MoveFocusDown",
+            "keys": "alt+down"
+        },
+        {
+            "id": "Terminal.MoveFocusLeft",
+            "keys": "alt+left"
+        },
+        {
+            "id": "Terminal.MoveFocusRight",
+            "keys": "alt+right"
+        },
+        {
+            "id": "Terminal.MoveFocusUp",
+            "keys": "alt+up"
+        },
+        {
+            "id": "Terminal.OpenNewTab",
+            "keys": "alt+t"
+        },
+        {
+            "id": "Terminal.QuakeMode",
+            "keys": "win+'"
+        },
+        {
+            "id": "Terminal.ResizePaneDown",
+            "keys": "alt+shift+down"
+        },
+        {
+            "id": "Terminal.ResizePaneLeft",
+            "keys": "alt+shift+left"
+        },
+        {
+            "id": "Terminal.ResizePaneRight",
+            "keys": "alt+shift+right"
+        },
+        {
+            "id": "Terminal.ResizePaneUp",
+            "keys": "alt+shift+up"
+        },
+        {
+            "id": "Terminal.ScrollDown",
+            "keys": "ctrl+shift+j"
+        },
+        {
+            "id": "Terminal.ScrollUp",
+            "keys": "ctrl+shift+k"
+        },
+        {
+            "id": "Terminal.Suggestions",
+            "keys": "ctrl+space"
+        },
+        {
+            "id": "Terminal.SwitchToLastTab",
+            "keys": "alt+9"
+        },
+        {
+            "id": "Terminal.SwitchToTab0",
+            "keys": "alt+1"
+        },
+        {
+            "id": "Terminal.SwitchToTab1",
+            "keys": "alt+2"
+        },
+        {
+            "id": "Terminal.SwitchToTab2",
+            "keys": "alt+3"
+        },
+        {
+            "id": "Terminal.SwitchToTab3",
+            "keys": "alt+4"
+        },
+        {
+            "id": "Terminal.SwitchToTab4",
+            "keys": "alt+5"
+        },
+        {
+            "id": "Terminal.SwitchToTab5",
+            "keys": "alt+6"
+        },
+        {
+            "id": "Terminal.SwitchToTab6",
+            "keys": "alt+7"
+        },
+        {
+            "id": "Terminal.SwitchToTab7",
+            "keys": "alt+8"
+        }
+    ],
+    "newTabMenu":
+    [
+        {
+            "type": "remainingProfiles"
+        }
+    ],
+    "profiles":
+    {
+        "defaults":
+        {
+            "colorScheme": "One Half Light",
+            "font":
+            {
+                "face": "FiraCode Nerd Font"
+            }
+        },
+        "list":
+        [
+            {
+                "colorScheme": "Dimidium",
+                "commandline": "%SystemRoot%\\System32\\cmd.exe /k \"SETUP_CMD_PATH\"",
+                "cursorColor": "#817E7E",
+                "cursorShape": "filledBox",
+                "font":
+                {
+                    "size": 10
+                },
+                "guid": "CMD_GUID",
+                "hidden": false,
+                "name": "cmd"
+            }
+        ]
+    },
+    "schemes": [],
+    "searchWebDefaultQueryUrl": null,
+    "theme": "dark",
+    "themes": []
+}
