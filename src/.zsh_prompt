@@ -1,1 +1,0 @@
-PROMPT='%(?.%F{cyan}.%F{red})%n@%m %c %# %f'

@@ -1,3 +1,11 @@
+autoload -Uz add-zsh-hook
+
+# Prompt
+set_prompt() {
+	PROMPT='%(?.%F{cyan}.%F{red})%n@%m %c %# %f'
+}
+add-zsh-hook precmd set_prompt
+
 # Utils
 function rbg() {
 	"$@" > /dev/null 2>&1 &

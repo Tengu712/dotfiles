@@ -123,7 +123,6 @@ def apply_lazygit():
 # =========================================================================== #
 
 if SYSTEM == 'Darwin':
-	copy_file_to_home('.zsh_prompt')
 	copy_file_to_home('.zshenv')
 elif SYSTEM == 'Windows':
 	copy_file_to_home('setup.cmd')
