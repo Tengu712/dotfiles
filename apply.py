@@ -48,6 +48,8 @@ def compile_msvc(src, dst):
 	dst.parent.mkdir(parents=True, exist_ok=True)
 	subprocess.run(
 		['cl', '/O2', '/EHsc', '/nologo', '/std:c++17', src, f'/Fe:{dst}'],
+		stdout=subprocess.DEVNULL,
+		stderr=subprocess.DEVNULL,
 		check=True,
 	)
 	for f in glob.glob("./*.obj"):
