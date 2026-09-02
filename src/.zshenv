@@ -28,8 +28,8 @@ alias groot='git commit --allow-empty -m "root commit"'
 alias gsuir='git submodule update --init --recursive'
 
 # Vim
-alias vf='af | vim -c OpenFromPipe - --not-a-term'
-alias vg='ag | vim -c OpenFromPipe - --not-a-term'
+alias vf='vim -c StartWithAF'
+alias vg='vim -c StartWithAG'
 
 # Lazygit
 alias lg='lazygit'
