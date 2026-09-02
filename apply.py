@@ -1,4 +1,5 @@
 import json
+import glob
 import os
 import platform
 import shutil
@@ -6,8 +7,11 @@ import subprocess
 import sys
 from pathlib import Path
 
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
 SYSTEM   = platform.system()
 HOME_DIR = Path.home()
+EXE_DIR  = HOME_DIR / '.executables'
 SRC_DIR  = Path(__file__).resolve().parent / 'src'
 
 if SYSTEM == 'Linux':
@@ -32,14 +36,39 @@ def copy_file(src, dst):
 def copy_file_to_home(path):
 	copy_file(SRC_DIR / path, HOME_DIR / path)
 
+def compile_gpp(src, dst):
+	dst.parent.mkdir(parents=True, exist_ok=True)
+	subprocess.run(
+		['g++', '-O2', '-std=c++17', '-o', dst, src],
+		check=True,
+	)
+	print(f'compiled {src} -> {dst}')
+
+def compile_msvc(src, dst):
+	dst.parent.mkdir(parents=True, exist_ok=True)
+	subprocess.run(
+		['cl', '/O2', '/EHsc', '/nologo', '/std:c++17', src, f'/Fe:{dst}'],
+		check=True,
+	)
+	for f in glob.glob("./*.obj"):
+		os.remove(f)
+	print(f'compiled {src} -> {dst}')
+
 # =========================================================================== #
 #     terminal                                                                #
 # =========================================================================== #
 
-def apply_terminal_windows():
-	if SYSTEM != 'Windows':
-		return
+def apply_sh():
+	if SYSTEM == 'Darwin':
+		copy_file_to_home('.zshenv')
+		compile_gpp(SRC_DIR / 'search' / 'main.cpp', EXE_DIR / 'search')
+		compile_gpp(SRC_DIR / 'rg-preview' / 'main.cpp', EXE_DIR / 'rg-preview')
+	elif SYSTEM == 'Windows':
+		copy_file_to_home('setup.cmd')
+		compile_msvc(SRC_DIR / 'search' / 'main.cpp', EXE_DIR / 'search.exe')
+		compile_msvc(SRC_DIR / 'rg-preview' / 'main.cpp', EXE_DIR / 'rg-preview.exe')
 
+def apply_terminal_windows():
 	local_appdata = os.environ['LOCALAPPDATA']
 	if local_appdata == '':
 		print('LOCALAPPDATA not defined')
@@ -122,11 +151,7 @@ def apply_lazygit():
 #     main                                                                    #
 # =========================================================================== #
 
-if SYSTEM == 'Darwin':
-	copy_file_to_home('.zshenv')
-elif SYSTEM == 'Windows':
-	copy_file_to_home('setup.cmd')
-	apply_terminal_windows()
-
+apply_sh()
+if SYSTEM == 'Windows': apply_terminal_windows()
 apply_vim()
 apply_lazygit()

@@ -56,6 +56,80 @@ autocmd FileType rust  setlocal expandtab nolist
 autocmd FileType swift setlocal expandtab nolist
 autocmd FileType go    setlocal nolist
 
+" Utils
+command! LN echo line('.')
+command! HG echo synIDattr(synID(line("."), col("."), 1), "name")
+command! E  execute 'edit .'
+command! EE execute 'edit %:h'
+command! ER execute 'edit #'
+
+"" open from af or ag
+function! s:open_from_pipe()
+	let l:line = getline(1)
+	if l:line ==# ''
+		return
+	endif
+
+	let l:args = split(l:line, ':')
+	let l:fn   = l:args[0]
+	let l:ln   = len(l:args) > 1 ? l:args[1] : '1'
+
+	setlocal nomodified
+	execute 'edit +' . l:ln . ' ' . l:fn
+
+	bwipeout 1
+endfunction
+command! OpenFromPipe call <SID>open_from_pipe()
+
+"" open with af
+function! AfEdit()
+	let tmp = tempname()
+	silent execute '!search af > ' . shellescape(tmp)
+	redraw!
+	let lines = readfile(tmp)
+	call delete(tmp)
+	if !empty(lines)
+		execute 'edit ' . fnameescape(lines[0])
+	endif
+endfunction
+command! VF call AfEdit()
+
+"" open with ag
+function! AgEdit()
+	let tmp = tempname()
+	silent execute '!search ag > ' . shellescape(tmp)
+	redraw!
+	let lines = readfile(tmp)
+	call delete(tmp)
+	if !empty(lines)
+		let parts = split(lines[0], ':')
+		let filename = parts[0]
+		let lnum = parts[1]
+		execute 'edit +' . lnum . ' ' . fnameescape(filename)
+	endif
+endfunction
+command! VG call AgEdit()
+
+"" list 0-255 colors
+function! ShowColors()
+	new
+	for i in range(0, 15)
+		let s = ''
+		for j in range(0, 15)
+			let n = i * 16 + j
+			let s .= printf('%3d ', n)
+		endfor
+		call append(line('$'), s)
+	endfor
+	1d
+	for i in range(0, 255)
+		execute 'highlight Color' . i . ' ctermfg=' . i
+		execute 'syntax match Color' . i . ' /\<' . i . '\>/'
+	endfor
+	setlocal readonly nomodifiable buftype=nofile bufhidden=wipe noswapfile
+endfunction
+command! Colors call ShowColors()
+
 " Plugins
 runtime swank-client/script.vim
 
@@ -111,90 +185,3 @@ function! s:EasyJump()
 endfunction
 
 nnoremap r :call <SID>EasyJump()<CR>
-
-" ============================================================================ "
-"     Filer                                                                    "
-" ============================================================================ "
-
-let g:netrw_liststyle = 3
-let g:netrw_fastbrowse = 2
-
-function! ToggleNetrwMinimize()
-		let l:netrw = filter(getbufinfo(), 'getbufvar(v:val.bufnr, "&filetype") ==# "netrw"')
-		if empty(l:netrw)
-				execute 'topleft ' . ((&columns * 15) / 100) . 'vsplit'
-				Explore
-		elseif empty(l:netrw[0].windows)
-				execute 'topleft ' . ((&columns * 15) / 100) . 'vsplit'
-				execute 'buffer' l:netrw[0].bufnr
-				for l:key in keys(b:)
-						if l:key =~# '^saved_netrw_'
-								let l:w_key = substitute(l:key, '^saved_', '', '')
-								call setwinvar(0, l:w_key, getbufvar('%', l:key))
-						endif
-				endfor
-		else
-				call win_gotoid(l:netrw[0].windows[0])
-				for l:key in keys(w:)
-						if l:key =~# '^netrw_'
-								call setbufvar('%', 'saved_' . l:key, getwinvar(0, l:key))
-						endif
-				endfor
-				hide
-		endif
-endfunction
-
-command! T call ToggleNetrwMinimize()
-
-" ============================================================================ "
-"     Commands                                                                 "
-" ============================================================================ "
-
-function! AfEdit()
-	let tmp = tempname()
-	silent execute '!af > ' . shellescape(tmp)
-	redraw!
-	let lines = readfile(tmp)
-	call delete(tmp)
-	if !empty(lines)
-		execute 'edit ' . fnameescape(lines[0])
-	endif
-endfunction
-
-function! AgEdit()
-	let tmp = tempname()
-	silent execute '!ag > ' . shellescape(tmp)
-	redraw!
-	let lines = readfile(tmp)
-	call delete(tmp)
-	if !empty(lines)
-		let parts = split(lines[0], ':')
-		let filename = parts[0]
-		let lnum = parts[1]
-		execute 'edit +' . lnum . ' ' . fnameescape(filename)
-	endif
-endfunction
-
-command! VF call AfEdit()
-command! VG call AgEdit()
-command! LN echo line('.')
-command! HG echo synIDattr(synID(line("."), col("."), 1), "name")
-
-function! ShowColors()
-	new
-	for i in range(0, 15)
-		let s = ''
-		for j in range(0, 15)
-			let n = i * 16 + j
-			let s .= printf('%3d ', n)
-		endfor
-		call append(line('$'), s)
-	endfor
-	1d
-	for i in range(0, 255)
-		execute 'highlight Color' . i . ' ctermfg=' . i
-		execute 'syntax match Color' . i . ' /\<' . i . '\>/'
-	endfor
-	setlocal readonly nomodifiable buftype=nofile bufhidden=wipe noswapfile
-endfunction
-command! Colors call ShowColors()
