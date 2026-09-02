@@ -21,7 +21,7 @@ doskey gpush=git push origin HEAD $*
 doskey groot=git commit --allow-empty -m "root commit" $*
 doskey gsuir=git submodule update --init --recursive $*
 
-doskey vf=search af ^| vim -c OpenFromPipe - --not-a-term
-doskey vg=search ag ^| vim -c OpenFromPipe - --not-a-term
+doskey vf=vim -c StartWithAF
+doskey vg=vim -c StartWithAG
 
 doskey lg=lazygit $*

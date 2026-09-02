@@ -63,26 +63,9 @@ command! E  execute 'edit .'
 command! EE execute 'edit %:h'
 command! ER execute 'edit #'
 
-"" open from af or ag
-function! s:open_from_pipe()
-	let l:line = getline(1)
-	if l:line ==# ''
-		return
-	endif
-
-	let l:args = split(l:line, ':')
-	let l:fn   = l:args[0]
-	let l:ln   = len(l:args) > 1 ? l:args[1] : '1'
-
-	setlocal nomodified
-	execute 'edit +' . l:ln . ' ' . l:fn
-
-	bwipeout 1
-endfunction
-command! OpenFromPipe call <SID>open_from_pipe()
-
 "" open with af
 function! AfEdit()
+	" TODO: remove temp file
 	let tmp = tempname()
 	silent execute '!search af > ' . shellescape(tmp)
 	redraw!
@@ -96,6 +79,7 @@ command! VF call AfEdit()
 
 "" open with ag
 function! AgEdit()
+	" TODO: remove temp file
 	let tmp = tempname()
 	silent execute '!search ag > ' . shellescape(tmp)
 	redraw!
@@ -109,6 +93,18 @@ function! AgEdit()
 	endif
 endfunction
 command! VG call AgEdit()
+
+"" start vim with af
+function! s:start_with_af()
+	call AfEdit()
+endfunction
+command! StartWithAF call <SID>start_with_af()
+
+"" start vim with ag
+function! s:start_with_ag()
+	call AgEdit()
+endfunction
+command! StartWithAG call <SID>start_with_ag()
 
 "" list 0-255 colors
 function! ShowColors()
