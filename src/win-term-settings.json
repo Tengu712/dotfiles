@@ -44,7 +44,8 @@
             "keys": "alt+up"
         },
         {
-            "id": "Terminal.OpenNewTab",
+            "id": "User.duplicateTab",
+            "command": "duplicateTab",
             "keys": "alt+t"
         },
         {
@@ -145,7 +146,8 @@
                 },
                 "guid": "CMD_GUID",
                 "hidden": false,
-                "name": "cmd"
+                "name": "cmd",
+                "startingDirectory": null
             }
         ]
     },
