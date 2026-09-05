@@ -1,6 +1,7 @@
 " General
 set t_Co=256
 set clipboard+=unnamed
+set mouse=
 set cursorline
 set cursorlineopt=number
 set re=0
