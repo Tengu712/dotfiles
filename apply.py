@@ -103,6 +103,14 @@ def apply_terminal_windows():
 	print(f'copied {src_path} -> {dst_path}')
 
 # =========================================================================== #
+#     Coding Agents                                                           #
+# =========================================================================== #
+
+def apply_system_prompt():
+	copy_file(SRC_DIR / 'SYSTEM_PROMPT.md', HOME_DIR / '.claude' / 'CLAUDE.md')
+	copy_file(SRC_DIR / 'SYSTEM_PROMPT.md', HOME_DIR / '.codex' / 'AGENTS.md')
+
+# =========================================================================== #
 #     vim                                                                     #
 # =========================================================================== #
 
@@ -159,5 +167,6 @@ def apply_lazygit():
 
 apply_sh()
 if SYSTEM == 'Windows': apply_terminal_windows()
+apply_system_prompt()
 apply_vim()
 apply_lazygit()
