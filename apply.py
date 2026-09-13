@@ -1,5 +1,4 @@
 import json
-import glob
 import os
 import platform
 import shutil
@@ -36,30 +35,18 @@ def copy_file(src, dst):
 def copy_file_to_home(path):
 	copy_file(SRC_DIR / path, HOME_DIR / path)
 
-def compile_gpp(src, dst):
-	dst.parent.mkdir(parents=True, exist_ok=True)
-	subprocess.run(
-		['g++', '-O2', '-std=c++17', '-o', dst, src],
-		check=True,
-	)
-	print(f'compiled {src} -> {dst}')
-
-def compile_msvc(src, dst):
-	dst.parent.mkdir(parents=True, exist_ok=True)
-	subprocess.run(
-		['cl', '/O2', '/EHsc', '/nologo', '/std:c++17', src, f'/Fe:{dst}'],
-		stdout=subprocess.DEVNULL,
-		stderr=subprocess.DEVNULL,
-		check=True,
-	)
-	for f in glob.glob("./*.obj"):
-		os.remove(f)
-	print(f'compiled {src} -> {dst}')
-
 def compile_rust(src, dst):
 	dst.parent.mkdir(parents=True, exist_ok=True)
 	subprocess.run(
-		['rustc', '-O', '-o', dst, src],
+		[
+			'rustc',
+			'-C', 'opt-level=z',
+			'-C', 'lto=fat',
+			'-C', 'codegen-units=1',
+			'-C', 'panic=abort',
+			'-C', 'strip=symbols',
+			'-o', dst, src,
+		],
 		check=True,
 	)
 	print(f'compiled {src} -> {dst}')
@@ -72,11 +59,11 @@ def apply_sh():
 	if SYSTEM == 'Darwin':
 		copy_file_to_home('.zshenv')
 		compile_rust(SRC_DIR / 'cmd' / 'search.rs', EXE_DIR / 'search')
-		compile_gpp(SRC_DIR / 'rg-preview' / 'main.cpp', EXE_DIR / 'rg-preview')
+		compile_rust(SRC_DIR / 'cmd' / 'rg-preview.rs', EXE_DIR / 'rg-preview')
 	elif SYSTEM == 'Windows':
 		copy_file_to_home('setup.cmd')
 		compile_rust(SRC_DIR / 'cmd' / 'search.cpp', EXE_DIR / 'search.exe')
-		compile_msvc(SRC_DIR / 'rg-preview' / 'main.cpp', EXE_DIR / 'rg-preview.exe')
+		compile_rust(SRC_DIR / 'cmd' / 'rg-preview.rs', EXE_DIR / 'rg-preview.exe')
 
 def apply_terminal_windows():
 	local_appdata = os.environ['LOCALAPPDATA']
