@@ -64,51 +64,6 @@ command! E  execute 'edit .'
 command! EE execute 'edit %:h'
 command! ER execute 'edit #'
 
-"" open with af
-function! AfEdit()
-	" TODO: remove temp file
-	let tmp = tempname()
-	silent execute '!search af > ' . shellescape(tmp)
-	redraw!
-	let lines = readfile(tmp)
-	call delete(tmp)
-	if !empty(lines)
-		execute 'edit ' . fnameescape(lines[0])
-	endif
-endfunction
-command! VF call AfEdit()
-
-"" open with ag
-function! AgEdit()
-	" TODO: remove temp file
-	let tmp = tempname()
-	silent execute '!search ag > ' . shellescape(tmp)
-	redraw!
-	let lines = readfile(tmp)
-	call delete(tmp)
-	if !empty(lines)
-		let parts = split(lines[0], ':')
-		let filename = parts[0]
-		let lnum = parts[1]
-		execute 'edit +' . lnum . ' ' . fnameescape(filename)
-	endif
-endfunction
-command! VG call AgEdit()
-
-"" start vim with af
-function! s:start_with_af()
-	setlocal nomodified
-	call AfEdit()
-endfunction
-command! StartWithAF call <SID>start_with_af()
-
-"" start vim with ag
-function! s:start_with_ag()
-	setlocal nomodified
-	call AgEdit()
-endfunction
-command! StartWithAG call <SID>start_with_ag()
-
 "" list 0-255 colors
 function! ShowColors()
 	new
@@ -130,5 +85,6 @@ endfunction
 command! Colors call ShowColors()
 
 " Plugins
+runtime search/script.vim
 runtime line-jumper/script.vim
 runtime swank-client/script.vim

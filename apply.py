@@ -56,6 +56,14 @@ def compile_msvc(src, dst):
 		os.remove(f)
 	print(f'compiled {src} -> {dst}')
 
+def compile_rust(src, dst):
+	dst.parent.mkdir(parents=True, exist_ok=True)
+	subprocess.run(
+		['rustc', '-O', '-o', dst, src],
+		check=True,
+	)
+	print(f'compiled {src} -> {dst}')
+
 # =========================================================================== #
 #     terminal                                                                #
 # =========================================================================== #
@@ -63,11 +71,11 @@ def compile_msvc(src, dst):
 def apply_sh():
 	if SYSTEM == 'Darwin':
 		copy_file_to_home('.zshenv')
-		compile_gpp(SRC_DIR / 'search' / 'main.cpp', EXE_DIR / 'search')
+		compile_rust(SRC_DIR / 'cmd' / 'search.rs', EXE_DIR / 'search')
 		compile_gpp(SRC_DIR / 'rg-preview' / 'main.cpp', EXE_DIR / 'rg-preview')
 	elif SYSTEM == 'Windows':
 		copy_file_to_home('setup.cmd')
-		compile_msvc(SRC_DIR / 'search' / 'main.cpp', EXE_DIR / 'search.exe')
+		compile_rust(SRC_DIR / 'cmd' / 'search.cpp', EXE_DIR / 'search.exe')
 		compile_msvc(SRC_DIR / 'rg-preview' / 'main.cpp', EXE_DIR / 'rg-preview.exe')
 
 def apply_terminal_windows():
@@ -137,6 +145,10 @@ def apply_vim():
 		copy_directory(
 			SRC_DIR / 'vim' / 'line-jumper',
 			vim_rtp / 'line-jumper',
+		)
+		copy_directory(
+			SRC_DIR / 'vim' / 'search',
+			vim_rtp / 'search',
 		)
 
 	os.remove('vim_rtp.txt')
