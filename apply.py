@@ -1,3 +1,4 @@
+import hashlib
 import json
 import os
 import platform
@@ -8,10 +9,11 @@ from pathlib import Path
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-SYSTEM   = platform.system()
-HOME_DIR = Path.home()
-EXE_DIR  = HOME_DIR / '.executables'
-SRC_DIR  = Path(__file__).resolve().parent / 'src'
+SYSTEM    = platform.system()
+HOME_DIR  = Path.home()
+EXE_DIR   = HOME_DIR / '.executables'
+SRC_DIR   = Path(__file__).resolve().parent / 'src'
+CACHE_DIR = Path(__file__).resolve().parent / '.cache'
 
 if SYSTEM == 'Linux':
 	print('Linux is unsupported')
@@ -37,6 +39,15 @@ def copy_file_to_home(path):
 
 def compile_rust(src, dst):
 	dst.parent.mkdir(parents=True, exist_ok=True)
+	CACHE_DIR.mkdir(parents=True, exist_ok=True)
+
+	src_hash   = hashlib.blake2b(src.read_bytes()).hexdigest()
+	cache_file = CACHE_DIR / f'{src.name}.hash'
+
+	if dst.exists() and cache_file.exists() and cache_file.read_text() == src_hash:
+		print(f'skipped {src} -> {dst} (unchanged)')
+		return
+
 	subprocess.run(
 		[
 			'rustc',
@@ -49,6 +60,7 @@ def compile_rust(src, dst):
 		],
 		check=True,
 	)
+	cache_file.write_text(src_hash)
 	print(f'compiled {src} -> {dst}')
 
 # =========================================================================== #
