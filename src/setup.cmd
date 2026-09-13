@@ -13,6 +13,9 @@ call "%VCVARS_PATH%"
 doskey af=search af
 doskey ag=search ag
 
+doskey vf=vim -c VF
+doskey vg=vim -c VG
+
 doskey gs=git status $*
 doskey gl=git log $*
 doskey ga=git add -A $*
@@ -20,8 +23,5 @@ doskey gm=git commit -m $*
 doskey gpush=git push origin HEAD $*
 doskey groot=git commit --allow-empty -m "root commit" $*
 doskey gsuir=git submodule update --init --recursive $*
-
-doskey vf=vim -c StartWithAF
-doskey vg=vim -c StartWithAG
 
 doskey lg=lazygit $*
