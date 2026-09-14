@@ -11,6 +11,11 @@ set softtabstop=4
 set notermguicolors
 let mapleader = "\<Space>"
 
+" netrw
+let g:netrw_liststyle = 3
+let g:netrw_keepdir = 0
+let g:netrw_banner = 0
+
 " Show special characters
 set list
 set listchars=tab:>-,eol:$,nbsp:_
