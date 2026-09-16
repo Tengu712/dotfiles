@@ -40,22 +40,6 @@ highlight IncSearch      cterm=NONE ctermfg=0   ctermbg=255
 " Bindings
 inoremap <silent> jj <ESC>
 nnoremap f /
-inoremap ( ()<Left>
-inoremap { {}<Left>
-inoremap [ []<Left>
-inoremap < <><Left>
-inoremap " ""<Left>
-inoremap ' ''<Left>
-inoremap ` ``<Left>
-function! s:smart_bs()
-	let l:pair = strpart(getline('.'), col('.') - 2, 2)
-	if col('.') > 1 && index(['()', '{}', '[]', '<>', '""', "''", '``'], l:pair) >= 0
-		return "\<Del>"
-	else
-		return "\<BS>"
-	endif
-endfunction
-inoremap <expr> <BS> <SID>smart_bs()
 
 " Settings for each languages
 autocmd FileType rust  setlocal expandtab nolist
@@ -90,6 +74,7 @@ endfunction
 command! Colors call ShowColors()
 
 " Plugins
-runtime search/script.vim
 runtime line-jumper/script.vim
+runtime search/script.vim
+runtime surround/script.vim
 runtime swank-client/script.vim

@@ -138,16 +138,20 @@ def apply_vim():
 		vim_rtp = Path(vim_rtp)
 
 		copy_directory(
-			SRC_DIR / 'vim' / 'swank-client',
-			vim_rtp / 'swank-client',
-		)
-		copy_directory(
 			SRC_DIR / 'vim' / 'line-jumper',
 			vim_rtp / 'line-jumper',
 		)
 		copy_directory(
 			SRC_DIR / 'vim' / 'search',
 			vim_rtp / 'search',
+		)
+		copy_directory(
+			SRC_DIR / 'vim' / 'surround',
+			vim_rtp / 'surround',
+		)
+		copy_directory(
+			SRC_DIR / 'vim' / 'swank-client',
+			vim_rtp / 'swank-client',
 		)
 
 	os.remove('vim_rtp.txt')
