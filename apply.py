@@ -74,7 +74,7 @@ def apply_sh():
 		compile_rust(SRC_DIR / 'cmd' / 'rg-preview.rs', EXE_DIR / 'rg-preview')
 	elif SYSTEM == 'Windows':
 		copy_file_to_home('setup.cmd')
-		compile_rust(SRC_DIR / 'cmd' / 'search.cpp', EXE_DIR / 'search.exe')
+		compile_rust(SRC_DIR / 'cmd' / 'search.rs', EXE_DIR / 'search.exe')
 		compile_rust(SRC_DIR / 'cmd' / 'rg-preview.rs', EXE_DIR / 'rg-preview.exe')
 
 def apply_terminal_windows():
