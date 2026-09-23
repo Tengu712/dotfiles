@@ -7,6 +7,7 @@ add-zsh-hook precmd set_prompt
 
 # Path
 export PATH="$HOME/.executables:$PATH"
+eval "$(mise activate zsh)"
 
 # Utils
 function rbg() {
