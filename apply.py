@@ -2,6 +2,7 @@ import hashlib
 import json
 import os
 import platform
+import re
 import shutil
 import subprocess
 import sys
@@ -67,9 +68,30 @@ def compile_rust(src, dst):
 #     terminal                                                                #
 # =========================================================================== #
 
+def embed_zshrc():
+	MARK_START = '# MARK: start dotfiles'
+	MARK_END   = '# MARK: end dotfiles'
+
+	zshrc_path = Path(HOME_DIR / '.zshrc')
+	zshrc      = zshrc_path.read_text().rstrip('\n') if zshrc_path.exists() else ''
+	src_path   = Path(SRC_DIR / '.zshrc')
+	src        = src_path.read_text().rstrip('\n')
+	block      = f'{MARK_START}\n{src}\n{MARK_END}\n'
+	pattern = re.compile(rf"^{re.escape(MARK_START)}$.*?^{re.escape(MARK_END)}$", re.M | re.S)
+
+	if pattern.search(zshrc):
+		zshrc = pattern.sub(lambda _: block, zshrc, count=1)
+		if not zshrc.endswith('\n'):
+			zshrc += '\n'
+	else:
+		zshrc += '\n\n' + block
+
+	zshrc_path.write_text(zshrc)
+	print(f'set {src_path} -> {zshrc_path}')
+
 def apply_sh():
 	if SYSTEM == 'Darwin':
-		copy_file_to_home('.zshenv')
+		embed_zshrc()
 		compile_rust(SRC_DIR / 'cmd' / 'search.rs', EXE_DIR / 'search')
 		compile_rust(SRC_DIR / 'cmd' / 'rg-preview.rs', EXE_DIR / 'rg-preview')
 	elif SYSTEM == 'Windows':
@@ -157,6 +179,15 @@ def apply_vim():
 	os.remove('vim_rtp.txt')
 
 # =========================================================================== #
+#     mise                                                                    #
+# =========================================================================== #
+
+def apply_mise():
+	copy_file(SRC_DIR / 'mise.toml', HOME_DIR / '.config' / 'mise' / 'config.toml')
+
+	subprocess.run(['mise', 'install'], check=True)
+
+# =========================================================================== #
 #     lazygit                                                                 #
 # =========================================================================== #
 
@@ -184,4 +215,5 @@ apply_sh()
 if SYSTEM == 'Windows': apply_terminal_windows()
 apply_system_prompt()
 apply_vim()
+apply_mise()
 apply_lazygit()
