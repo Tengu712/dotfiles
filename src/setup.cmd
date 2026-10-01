@@ -11,6 +11,8 @@ for /f "delims=" %%i in ('"C:\Program Files (x86)\Microsoft Visual Studio\Instal
 )
 call "%VCVARS_PATH%"
 
+doskey cdoc=cd %USERPROFILE%\Documents
+
 doskey af=search af
 doskey ag=search ag
 
