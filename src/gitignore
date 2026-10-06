@@ -1,0 +1,9 @@
+*.swp
+.clangd
+.claude
+.DS_Store
+agent-sessions/
+CLAUDE.md
+compile_commands.json
+compile_flags.txt
+tmpclaude*
