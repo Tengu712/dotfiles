@@ -140,6 +140,13 @@ def apply_system_prompt():
 	copy_file(SRC_DIR / 'SYSTEM_PROMPT.md', HOME_DIR / '.codex' / 'AGENTS.md')
 
 # =========================================================================== #
+#     git                                                                     #
+# =========================================================================== #
+
+def apply_git():
+	copy_file(SRC_DIR / 'gitignore', HOME_DIR / '.config' / 'git' / 'ignore')
+
+# =========================================================================== #
 #     vim                                                                     #
 # =========================================================================== #
 
@@ -214,6 +221,7 @@ def apply_lazygit():
 apply_sh()
 if SYSTEM == 'Windows': apply_terminal_windows()
 apply_system_prompt()
+apply_git()
 apply_vim()
 apply_mise()
 apply_lazygit()
