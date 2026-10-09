@@ -1,0 +1,12 @@
+[init]
+	defaultBranch = main
+
+[alias]
+	s = status -sb
+	l = log --oneline --graph --decorate
+	a = add -A
+	m = commit -m
+	p = pull origin HEAD
+	P = push origin HEAD
+	root = commit --allow-empty -m "root commit"
+	suir = submodule update --init --recursive

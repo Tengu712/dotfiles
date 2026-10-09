@@ -144,7 +144,8 @@ def apply_system_prompt():
 # =========================================================================== #
 
 def apply_git():
-	copy_file(SRC_DIR / 'gitignore', HOME_DIR / '.config' / 'git' / 'ignore')
+	copy_file(SRC_DIR / 'git' / 'ignore', HOME_DIR / '.config' / 'git' / 'ignore')
+	copy_file(SRC_DIR / 'git' / 'config', HOME_DIR / '.config' / 'git' / 'config')
 
 # =========================================================================== #
 #     vim                                                                     #
