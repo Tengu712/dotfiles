@@ -23,15 +23,6 @@ alias ag='search ag'
 alias vf='vim -c VF'
 alias vg='vim -c VG'
 
-# Git
-alias gs='git status'
-alias gl='git log'
-alias ga='git add -A'
-alias gm='git commit -m'
-alias gpush='git push origin HEAD'
-alias groot='git commit --allow-empty -m "root commit"'
-alias gsuir='git submodule update --init --recursive'
-
 # Lazygit
 alias lg='lazygit'
 
