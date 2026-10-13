@@ -8,5 +8,9 @@
 	m = commit -m
 	p = pull origin HEAD
 	P = push origin HEAD
+	ss = switch
+	sc = switch -c
+	rcur = reset --hard HEAD
+	rpre = reset --soft HEAD^
 	root = commit --allow-empty -m "root commit"
 	suir = submodule update --init --recursive
