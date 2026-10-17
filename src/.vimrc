@@ -11,10 +11,11 @@ set softtabstop=4
 set notermguicolors
 let mapleader = "\<Space>"
 
-" netrw
-let g:netrw_liststyle = 3
-let g:netrw_keepdir = 0
-let g:netrw_banner = 0
+" fern
+let g:fern#renderer = "nerdfont"
+let g:fern#default_hidden = 1
+let g:fern#default_exclude = '^\%(\.git\|\.cache\|.*\.swp\|target\)$'
+autocmd FileType fern setlocal nowrap
 
 " Show special characters
 set list
@@ -36,6 +37,7 @@ highlight SpecialComment cterm=NONE ctermfg=244
 highlight VimLineComment cterm=NONE ctermfg=244
 "" others
 highlight IncSearch      cterm=NONE ctermfg=0   ctermbg=255
+highlight SignColumn     cterm=NONE             ctermbg=NONE
 
 " Bindings
 inoremap <silent> jj <ESC>
@@ -49,9 +51,7 @@ autocmd FileType go    setlocal nolist
 " Utils
 command! LN echo line('.')
 command! HG echo synIDattr(synID(line("."), col("."), 1), "name")
-command! E  execute 'edit .'
-command! EE execute 'edit %:h'
-command! ER execute 'edit #'
+command! E  execute 'Fern ' . fnameescape(trim(system('git -C ' . shellescape(expand('%:p:h')) . ' rev-parse --show-toplevel'))) . ' -drawer -width=' . &columns / 4
 
 "" list 0-255 colors
 function! ShowColors()

@@ -38,6 +38,24 @@ def copy_file(src, dst):
 def copy_file_to_home(path):
 	copy_file(SRC_DIR / path, HOME_DIR / path)
 
+def clone_git(url, dst):
+	if not (dst / '.git').exists():
+		dst.parent.mkdir(parents=True, exist_ok=True)
+		subprocess.run(['git', 'clone', '--depth', '1', url, dst], check=True)
+		print(f'cloned {url} -> {dst}')
+		return
+
+	remote_head = subprocess.run(['git', 'ls-remote', url, 'HEAD'], capture_output=True, text=True, check=True).stdout.split()[0]
+	local_head  = subprocess.run(['git', '-C', dst, 'rev-parse', 'HEAD'], capture_output=True, text=True, check=True).stdout.strip()
+
+	if remote_head == local_head:
+		print(f'skipped {url} -> {dst} (unchanged)')
+		return
+
+	subprocess.run(['git', '-C', dst, 'fetch', '--depth', '1', 'origin'], check=True)
+	subprocess.run(['git', '-C', dst, 'reset', '--hard', 'FETCH_HEAD'], check=True)
+	print(f'updated {url} -> {dst}')
+
 def compile_rust(src, dst):
 	dst.parent.mkdir(parents=True, exist_ok=True)
 	CACHE_DIR.mkdir(parents=True, exist_ok=True)
@@ -155,7 +173,7 @@ def apply_vim():
 	copy_file_to_home('.vimrc')
 
 	subprocess.run(
-		['vim', '-es', '-c', 'redir! > vim_rtp.txt', '-c', 'echo &runtimepath', '-c', 'redir END', '-c', 'quit!'],
+		['vim', '-es', '--noplugin', '-c', 'redir! > vim_rtp.txt', '-c', 'echo &runtimepath', '-c', 'redir END', '-c', 'quit!'],
 		check=True,
 	)
 
@@ -182,6 +200,22 @@ def apply_vim():
 		copy_directory(
 			SRC_DIR / 'vim' / 'swank-client',
 			vim_rtp / 'swank-client',
+		)
+		clone_git(
+			'https://github.com/lambdalisue/vim-fern',
+			vim_rtp / 'pack' / 'plugins' / 'start' / 'vim-fern',
+		)
+		clone_git(
+			'https://github.com/lambdalisue/vim-fern-git-status',
+			vim_rtp / 'pack' / 'plugins' / 'start' / 'vim-fern-git-status',
+		)
+		clone_git(
+			'https://github.com/lambdalisue/nerdfont.vim',
+			vim_rtp / 'pack' / 'plugins' / 'start' / 'nerdfont.vim',
+		)
+		clone_git(
+			'https://github.com/lambdalisue/vim-fern-renderer-nerdfont',
+			vim_rtp / 'pack' / 'plugins' / 'start' / 'vim-fern-renderer-nerdfont',
 		)
 
 	os.remove('vim_rtp.txt')
