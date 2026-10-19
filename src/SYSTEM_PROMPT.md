@@ -31,6 +31,7 @@
 
 ## Session Log Rules
 - In sessions where you are given a codebase and asked to do programming, create agent-sessions/LOG_{TARGET}.yml in the codebase root directory. At every iteration of the dialogue, update the YAML and reread it periodically to use as the foundation of your thinking
+- If the user provides a prompt starting with 'Q: ', do not update the session log, as it is a simple question that does not need to be recorded
 - Use the following template for the YAML. Keep and follow the comments for each field. Never add any fields:
 
 ```yaml
