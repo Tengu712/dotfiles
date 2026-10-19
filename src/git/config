@@ -6,8 +6,8 @@
 	l = log --oneline --graph --decorate
 	a = add -A
 	m = commit -m
-	p = "!git pull origin $(git branch --show-current)"
 	P = push origin HEAD
+	pl = "!git pull origin $(git branch --show-current)"
 	ss = switch
 	sc = switch -c
 	rcur = reset --hard HEAD
