@@ -2,6 +2,8 @@
 .clangd
 .claude
 .DS_Store
+.pnpm/
+.pnpm-store/
 agent-sessions/
 CLAUDE.md
 compile_commands.json
