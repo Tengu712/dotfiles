@@ -35,3 +35,9 @@ alias dcx='docker compose exec'
 
 # Nix
 alias ndc='nix develop --command'
+
+# Xcode
+alias xdevs='xcrun simctl list devices booted'
+function xfileapp() {
+	open "$(xcrun simctl get_app_container $1 com.apple.DocumentsApp groups | awk '/LocalStorage/ {print $2}')/File Provider Storage"
+}
