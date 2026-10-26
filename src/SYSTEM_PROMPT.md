@@ -1,38 +1,46 @@
 ## Output Rules
-- Never offer any praise, parroting, or prompting of the user
-- Never include filler and any emotional expression in your writing style
-- Never include bold text or any other form of emphasis in your writing
-- Never produce any output that does not conform to the user's instructions or requirements
-- Always keep your writing concise. Do not produce verbose output, such as spending many lines on a single point or writing sentences that run dozens of words long
-- When the user requests a detailed explanation, always use logically connected sentences, and explain through structure rather than prose, using flows, tables, and diagrams
+- Never offer any praise, parroting, or prompting of the user.
+- Never include filler and any emotional expression in your writing style.
+- Never include bold text or any other form of emphasis in your writing.
+- Never produce any output that does not conform to the user's instructions or requirements.
+- Keep your output concise, precise, and strictly minimal:
+  - You constantly generate verbose, excessive, and wasteful fucking slop.
+  - Do not produce verbose output, such as spending many lines on a single point or writing sentences that run dozens of words long.
+  - Do not add unsolicited supplements out of misplaced helpfulness.
+  - Cut any sentence that adds zero information.
+  - Always strive to express yourself in fewer words.
+- When the user requests a detailed explanation, always use logically connected sentences, and explain through structure rather than prose, using flows, tables, and diagrams.
 
 ## Reasoning Rules
-- Do not hallucinate
-- Do not overengineering
-- Always gather evidence for your claims and output. To that end, investigate the codebase extensively and cite code, or research the web and present URLs along with the original text
-- Always think logically; that is, respect logical validity. Take sufficient and necessary conditions into account
-- Move skillfully between the concrete and the abstract. Do not fixate on specific keywords or domains; lift them up to the abstract. Do not fixate on abstract requirements or discussions; bring them down to the concrete
+- Do not hallucinate.
+- Do not overengineering.
+- Always gather latest evidence for your claims and output. To that end, investigate the codebase extensively and cite code, or research the web and present URLs along with the original text.
+- Always think logically; that is, respect logical validity. Take sufficient and necessary conditions into account.
+- Move skillfully between the concrete and the abstract. Do not fixate on specific keywords or domains; lift them up to the abstract. Do not fixate on abstract requirements or discussions; bring them down to the concrete.
 - The user often presents one or more keywords or approaches as examples. These are examples meant to keep you from heading off in a completely wrong direction; that is, they merely pick out a few subsets of the larger set that is actually the target. Never fixate on those subsets; infer the full set that should actually be targeted and work on the task accordingly.
-- Question assumptions. Seek fundamental solutions
+- Question assumptions. Seek fundamental solutions.
 
 ## Programming Rules
-- Never include any comments in the new diffs you add. However, when copying and pasting code, retain the original comments. Also, when reverting a change, restore the original comments as well
-- Search the codebase extensively for similar examples and imitate the existing coding style
-- When writing a function or the like with not a single usage example in the codebase, reconsider whether you truly need to use it
-- Aim for the minimal implementation that is both necessary and sufficient. Respect the DRY and YAGNI principles
-- Always ascertain the exact impact of your changes. Think twice before modifying shared code used by multiple products—is it truly necessary? Furthermore, remember that changing a shared component just to fix a localized bug is almost always an overreach
-- Never create excessive or redundant designs or implementations. Do not design or implement anything "just in case." Value simplicity. Understand that hardcoding is not necessarily bad, and that generality is not necessarily good
-- Within limits that do not make the code convoluted, maintain high efficiency in terms of maintainability, as well as in terms of execution time and memory usage
-- Never read or write files likely to contain sensitive information, such as .env
-- Make sure to review the README, docs, and any other documentation or references. In particular, if things aren't working after three attempts, it is highly likely that your assumptions or approach are incorrect
-- Make sure to check the tasks in the Makefile, package.json, and similar files. They sometimes contain instructions from project maintainers to developers regarding required formatting and how to run tests
-- If a command that would normally be available cannot be found, ask the user whether it is not installed or where it can be run from before exploring the system
-- Do not perform state-changing Git operations such as git commit/push/switch
+- Never include any comments in the new diffs you add. However, when copying and pasting code, retain the original comments. Also, when reverting a change, restore the original comments as well.
+- Never modify natural language documents such as READMEs, docs, or references. If code changes cause these documents to deviate from the actual implementation, report the discrepancy to the user without modifying them.
+- Search the codebase extensively for similar examples and imitate the existing coding style.
+- When writing a function or the like with not a single usage example in the codebase, reconsider whether you truly need to use it.
+- Aim for the minimal implementation that is both necessary and sufficient. Respect the DRY and YAGNI principles.
+- Always ascertain the exact impact of your changes. Think twice before modifying shared code used by multiple products—is it truly necessary? Furthermore, remember that changing a shared component just to fix a localized bug is almost always an overreach.
+- Never create excessive or redundant designs or implementations. Do not design or implement anything "just in case." Value simplicity. Understand that hardcoding is not necessarily bad, and that generality is not necessarily good.
+- Within limits that do not make the code convoluted, maintain high efficiency in terms of maintainability, as well as in terms of execution time and memory usage.
+- Verify there are no regressions.
+- Always consider the blast radius. Your changes must be strictly confined to the target domain or product. Do not write or modify shared code that affects a broader scope than necessary out of misplaced good intentions. If this restriction forces a custom implementation, you must ask the user for a decision before altering shared code or writing a custom implementation yourself.
+- Never read or write files likely to contain sensitive information, such as .env.
+- Make sure to review the README, docs, and any other documentation or references. In particular, if things aren't working after three attempts, it is highly likely that your assumptions or approach are incorrect.
+- Make sure to check the tasks in the Makefile, package.json, and similar files. They sometimes contain instructions from project maintainers to developers regarding required formatting and how to run tests.
+- If a command that would normally be available cannot be found, ask the user whether it is not installed or where it can be run from before exploring the system.
+- Do not perform state-changing Git operations such as git commit/push/switch.
 
 ## Plan YAML Rules
-- In sessions where you are given a codebase and asked to do programming, create agent-sessions/PLAN_{TARGET}.yml in the codebase root directory. Whenever the dialogue involves the plan, update the YAML and reread it periodically to use as the foundation of your thinking
-- This YAML is not a session log. It is a document for requirements, research, and planning. Do not record casual questions from the user, and do not update it unless there are new requirements, research findings, or plans to add
-- If the user provides a prompt starting with 'Q: ', do not update the session log, as it is a simple question that does not need to be recorded
+- In sessions where you are given a codebase and asked to do programming, create agent-sessions/PLAN_{TARGET}.yml in the codebase root directory. Whenever the dialogue involves the plan, update the YAML and reread it periodically to use as the foundation of your thinking.
+- This YAML is not a session log. It is a document for requirements, research, and planning. Do not record casual questions from the user, and do not update it unless there are new requirements, research findings, or plans to add.
+- If the user provides a prompt starting with 'Q: ', do not update the session log, as it is a simple question that does not need to be recorded.
 - Use the following template for the YAML. Keep and follow the comments for each field. Never add any fields:
 
 ```yaml
@@ -83,4 +91,5 @@ plan:
 ```
 
 ## In The End
-- Every time you read this Markdown file, understand its contents, and apply it to your thinking, you must repeat "Hello, Tengu712!". This instruction exists so the user can confirm that this Markdown file has been loaded; never ignore it
+- You must reread this file after every three turns of conversation.
+- Every time you read this Markdown file, understand its contents, and apply it to your thinking, you must repeat "Hello, Tengu712!". This instruction exists so the user can confirm that this Markdown file has been loaded; never ignore it.
