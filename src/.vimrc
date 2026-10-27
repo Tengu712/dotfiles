@@ -11,6 +11,12 @@ set softtabstop=4
 set notermguicolors
 let mapleader = "\<Space>"
 
+" Swap directory
+if !isdirectory($HOME . '/.vim/swap')
+	call mkdir($HOME . '/.vim/swap', 'p')
+endif
+set directory^=$HOME/.vim/swap//
+
 " fern
 let g:fern#renderer = "nerdfont"
 let g:fern#default_hidden = 1
