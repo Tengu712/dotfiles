@@ -5,7 +5,10 @@
 .pnpm/
 .pnpm-store/
 agent-sessions/
+AGENTS.md
 CLAUDE.md
+AGENTS.local.md
+CLAUDE.local.md
 compile_commands.json
 compile_flags.txt
 tmpclaude*

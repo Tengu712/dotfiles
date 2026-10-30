@@ -90,6 +90,17 @@ plan:
     for:
 ```
 
+## Review Rules
+- When given an instruction starting with `QREVIEW:`, perform the review keeping the following in mind:
+  -  Strictly verify all of the following:
+    -  There are no functional issues
+    -  There are no security issues
+    -  There is no redundancy
+    -  There are no regressions
+    -  The code adheres to the codebase style
+  -  Since CI has passed, there is no need to run format, lint, or tests
+  -  The creation of `PLAN_*.md` is not required
+
 ## In The End
 - You must reread this file after every three turns of conversation.
 - Every time you read this Markdown file, understand its contents, and apply it to your thinking, you must repeat "Hello, Tengu712!". This instruction exists so the user can confirm that this Markdown file has been loaded; never ignore it.
