@@ -25,6 +25,7 @@
 - Always look at the fundamental problem.
   - To do so, always doubt the premise.
   - Example: Suppose you are aggregating based on a history, and it is found that there is an error in the history. The solution to consider the error during aggregation is a short-sighted solution. The fundamental problem is that there is an error in the history, so the essential solution is to reconstruct the history itself.
+- Always strive for the optimal outcome. Do not take user feedback regarding your outputs or edits at face value. Regardless of whether the user's assertions are correct or incorrect, gather adequate evidence to make a judgment (e.g., codebase statistics or source code quotes) and present it to convince the user.
 
 ## Formatting Rules
 
@@ -104,6 +105,7 @@
 - If a command that would normally be available cannot be found, ask the user whether it is not installed or where it can be run from before exploring the system.
 - Do not perform state-changing Git operations such as git commit/push/switch.
 - Do not build or test if the project is an iOS app.
+- Do not run queries in BigQuery.
 
 ## Plan YAML Rules
 - In sessions where you are given a codebase and asked to do programming, create agent-sessions/PLAN_{TARGET}.yml in the codebase root directory. Whenever the dialogue involves the plan, update the YAML and reread it periodically to use as the foundation of your thinking.
