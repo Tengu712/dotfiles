@@ -201,6 +201,10 @@ def apply_vim():
 			SRC_DIR / 'vim' / 'swank-client',
 			vim_rtp / 'swank-client',
 		)
+		copy_file(
+			SRC_DIR / 'vim' / 'fern.vim',
+			vim_rtp / 'fern.vim',
+		)
 		clone_git(
 			'https://github.com/lambdalisue/vim-fern',
 			vim_rtp / 'pack' / 'plugins' / 'start' / 'vim-fern',

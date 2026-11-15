@@ -17,12 +17,6 @@ if !isdirectory($HOME . '/.vim/swap')
 endif
 set directory^=$HOME/.vim/swap//
 
-" fern
-let g:fern#renderer = "nerdfont"
-let g:fern#default_hidden = 1
-let g:fern#default_exclude = '^\%(\.git\|\.cache\|.*\.swp\|target\)$'
-autocmd FileType fern setlocal nowrap
-
 " Show special characters
 set list
 set listchars=tab:>-,eol:$,nbsp:_
@@ -57,7 +51,6 @@ autocmd FileType go    setlocal nolist
 " Utils
 command! LN echo line('.')
 command! HG echo synIDattr(synID(line("."), col("."), 1), "name")
-command! E  execute 'Fern ' . fnameescape(trim(system('git -C ' . shellescape(expand('%:p:h')) . ' rev-parse --show-toplevel'))) . ' -drawer -width=' . &columns / 4
 
 "" list 0-255 colors
 function! ShowColors()
@@ -79,7 +72,10 @@ function! ShowColors()
 endfunction
 command! Colors call ShowColors()
 
-" Plugins
+" Third-party Plugins
+runtime fern.vim
+
+" Self-made Plugins
 runtime line-jumper/script.vim
 runtime search/script.vim
 runtime surround/script.vim
