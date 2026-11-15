@@ -42,6 +42,9 @@ highlight SignColumn     cterm=NONE             ctermbg=NONE
 " Bindings
 inoremap <silent> jj <ESC>
 nnoremap f /
+noremap gh 0
+noremap gj ^
+noremap gl $
 
 " Settings for each languages
 autocmd FileType rust  setlocal expandtab nolist
@@ -50,6 +53,7 @@ autocmd FileType go    setlocal nolist
 
 " Utils
 command! LN echo line('.')
+command! LG tab terminal ++close lazygit
 command! HG echo synIDattr(synID(line("."), col("."), 1), "name")
 
 "" list 0-255 colors
