@@ -2,13 +2,14 @@ import hashlib
 import json
 import os
 import platform
-import re
 import shutil
 import subprocess
 import sys
 from pathlib import Path
 
+
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
 
 SYSTEM    = platform.system()
 HOME_DIR  = Path.home()
@@ -16,13 +17,16 @@ EXE_DIR   = HOME_DIR / '.executables'
 SRC_DIR   = Path(__file__).resolve().parent / 'src'
 CACHE_DIR = Path(__file__).resolve().parent / '.cache'
 
+
 if SYSTEM == 'Linux':
 	print('Linux is unsupported')
 	sys.exit(1)
 
+
 # =========================================================================== #
 #     utils                                                                   #
 # =========================================================================== #
+
 
 def copy_directory(src, dst):
 	if dst.exists():
@@ -30,13 +34,12 @@ def copy_directory(src, dst):
 	shutil.copytree(src, dst)
 	print(f'copied {src} -> {dst}')
 
+
 def copy_file(src, dst):
 	dst.parent.mkdir(parents=True, exist_ok=True)
 	shutil.copy2(src, dst)
 	print(f'copied {src} -> {dst}')
 
-def copy_file_to_home(path):
-	copy_file(SRC_DIR / path, HOME_DIR / path)
 
 def clone_git(url, dst):
 	if not (dst / '.git').exists():
@@ -55,6 +58,7 @@ def clone_git(url, dst):
 	subprocess.run(['git', '-C', dst, 'fetch', '--depth', '1', 'origin'], check=True)
 	subprocess.run(['git', '-C', dst, 'reset', '--hard', 'FETCH_HEAD'], check=True)
 	print(f'updated {url} -> {dst}')
+
 
 def compile_rust(src, dst):
 	dst.parent.mkdir(parents=True, exist_ok=True)
@@ -82,42 +86,48 @@ def compile_rust(src, dst):
 	cache_file.write_text(src_hash)
 	print(f'compiled {src} -> {dst}')
 
+
 # =========================================================================== #
 #     terminal                                                                #
 # =========================================================================== #
 
-def embed_zshrc():
-	MARK_START = '# MARK: start dotfiles'
-	MARK_END   = '# MARK: end dotfiles'
 
-	zshrc_path = Path(HOME_DIR / '.zshrc')
-	zshrc      = zshrc_path.read_text().rstrip('\n') if zshrc_path.exists() else ''
-	src_path   = Path(SRC_DIR / '.zshrc')
-	src        = src_path.read_text().rstrip('\n')
-	block      = f'{MARK_START}\n{src}\n{MARK_END}\n'
-	pattern = re.compile(rf"^{re.escape(MARK_START)}$.*?^{re.escape(MARK_END)}$", re.M | re.S)
+def apply_zshrc():
+	if SYSTEM != 'Darwin':
+		print('skipped applying .zshrc')
+		return
 
-	if pattern.search(zshrc):
-		zshrc = pattern.sub(lambda _: block, zshrc, count=1)
-		if not zshrc.endswith('\n'):
-			zshrc += '\n'
-	else:
-		zshrc += '\n\n' + block
+	zshrc_path    = HOME_DIR / '.zshrc'
+	template_path = SRC_DIR / '.zshrc.template'
+	template      = template_path.read_text().rstrip('\n') if template_path.exists() else ''
+	src_path      = SRC_DIR / '.zshrc'
+	src           = src_path.read_text().rstrip('\n')
 
-	zshrc_path.write_text(zshrc)
+	zshrc_path.write_text(f'{template}\n\n{src}\n' if template else f'{src}\n')
 	print(f'set {src_path} -> {zshrc_path}')
 
-def apply_sh():
-	if SYSTEM == 'Darwin':
-		embed_zshrc()
-		compile_rust(SRC_DIR / 'cmd' / 'search.rs', EXE_DIR / 'search')
-		compile_rust(SRC_DIR / 'cmd' / 'rg-preview.rs', EXE_DIR / 'rg-preview')
-	elif SYSTEM == 'Windows':
-		copy_file_to_home('setup.cmd')
-		compile_rust(SRC_DIR / 'cmd' / 'search.rs', EXE_DIR / 'search.exe')
-		compile_rust(SRC_DIR / 'cmd' / 'rg-preview.rs', EXE_DIR / 'rg-preview.exe')
 
-def apply_terminal_windows():
+def apply_ghostty():
+	if SYSTEM != 'Darwin':
+		print('skipped applying config.ghostty')
+		return
+
+	copy_file(SRC_DIR / 'config.ghostty', HOME_DIR / 'Library' / 'Application Support' / 'com.mitchellh.ghostty' / 'config.ghostty')
+
+
+def apply_setup_cmd():
+	if SYSTEM != 'Windows':
+		print('skipped applying setup.cmd')
+		return
+
+	copy_file(SRC_DIR / 'setup.cmd', HOME_DIR / 'setup.cmd')
+
+
+def apply_windows_terminal():
+	if SYSTEM != 'Windows':
+		print('skipped applying Windows terminal settings')
+		return
+
 	local_appdata = os.environ['LOCALAPPDATA']
 	if local_appdata == '':
 		print('LOCALAPPDATA not defined')
@@ -149,28 +159,24 @@ def apply_terminal_windows():
 
 	print(f'copied {src_path} -> {dst_path}')
 
+
 # =========================================================================== #
-#     Coding Agents                                                           #
+#     tools                                                                   #
 # =========================================================================== #
+
 
 def apply_system_prompt():
 	copy_file(SRC_DIR / 'SYSTEM_PROMPT.md', HOME_DIR / '.claude' / 'CLAUDE.md')
 	copy_file(SRC_DIR / 'SYSTEM_PROMPT.md', HOME_DIR / '.codex' / 'AGENTS.md')
 
-# =========================================================================== #
-#     git                                                                     #
-# =========================================================================== #
 
 def apply_git():
 	copy_file(SRC_DIR / 'git' / 'ignore', HOME_DIR / '.config' / 'git' / 'ignore')
 	copy_file(SRC_DIR / 'git' / 'config', HOME_DIR / '.config' / 'git' / 'config')
 
-# =========================================================================== #
-#     vim                                                                     #
-# =========================================================================== #
 
 def apply_vim():
-	copy_file_to_home('.vimrc')
+	copy_file(SRC_DIR / '.vimrc', HOME_DIR / '.vimrc')
 
 	subprocess.run(
 		['vim', '-es', '--noplugin', '-c', 'redir! > vim_rtp.txt', '-c', 'echo &runtimepath', '-c', 'redir END', '-c', 'quit!'],
@@ -184,58 +190,38 @@ def apply_vim():
 	with open('vim_rtp.txt', 'r', encoding='UTF-8') as f:
 		vim_rtp = f.read().strip().split(',')[0]
 		vim_rtp = Path(vim_rtp)
-
-		copy_directory(
-			SRC_DIR / 'vim' / 'line-jumper',
-			vim_rtp / 'line-jumper',
-		)
-		copy_directory(
-			SRC_DIR / 'vim' / 'search',
-			vim_rtp / 'search',
-		)
-		copy_directory(
-			SRC_DIR / 'vim' / 'surround',
-			vim_rtp / 'surround',
-		)
-		copy_directory(
-			SRC_DIR / 'vim' / 'swank-client',
-			vim_rtp / 'swank-client',
-		)
-		copy_file(
-			SRC_DIR / 'vim' / 'fern.vim',
-			vim_rtp / 'fern.vim',
-		)
-		clone_git(
-			'https://github.com/lambdalisue/vim-fern',
-			vim_rtp / 'pack' / 'plugins' / 'start' / 'vim-fern',
-		)
-		clone_git(
-			'https://github.com/lambdalisue/vim-fern-git-status',
-			vim_rtp / 'pack' / 'plugins' / 'start' / 'vim-fern-git-status',
-		)
-		clone_git(
-			'https://github.com/lambdalisue/nerdfont.vim',
-			vim_rtp / 'pack' / 'plugins' / 'start' / 'nerdfont.vim',
-		)
-		clone_git(
-			'https://github.com/lambdalisue/vim-fern-renderer-nerdfont',
-			vim_rtp / 'pack' / 'plugins' / 'start' / 'vim-fern-renderer-nerdfont',
-		)
-
 	os.remove('vim_rtp.txt')
 
-# =========================================================================== #
-#     mise                                                                    #
-# =========================================================================== #
+	for src in (SRC_DIR / 'vim').iterdir():
+		if src.name == '.DS_Store':
+			continue
+		if src.is_dir():
+			copy_directory(src, vim_rtp / src.name)
+		else:
+			copy_file(src, vim_rtp / src.name)
+
+	clone_git(
+		'https://github.com/lambdalisue/vim-fern',
+		vim_rtp / 'pack' / 'plugins' / 'start' / 'vim-fern',
+	)
+	clone_git(
+		'https://github.com/lambdalisue/vim-fern-git-status',
+		vim_rtp / 'pack' / 'plugins' / 'start' / 'vim-fern-git-status',
+	)
+	clone_git(
+		'https://github.com/lambdalisue/nerdfont.vim',
+		vim_rtp / 'pack' / 'plugins' / 'start' / 'nerdfont.vim',
+	)
+	clone_git(
+		'https://github.com/lambdalisue/vim-fern-renderer-nerdfont',
+		vim_rtp / 'pack' / 'plugins' / 'start' / 'vim-fern-renderer-nerdfont',
+	)
+
 
 def apply_mise():
 	copy_file(SRC_DIR / 'mise.toml', HOME_DIR / '.config' / 'mise' / 'config.toml')
-
 	subprocess.run(['mise', 'install'], check=True)
 
-# =========================================================================== #
-#     lazygit                                                                 #
-# =========================================================================== #
 
 def apply_lazygit():
 	result = subprocess.run(
@@ -248,19 +234,27 @@ def apply_lazygit():
 	lazygit_cfg = result.stdout.strip()
 	lazygit_cfg = Path(lazygit_cfg)
 
-	copy_file(
-		SRC_DIR / 'lazygit-config.yml',
-		lazygit_cfg / 'config.yml',
-	)
+	copy_file(SRC_DIR / 'lazygit-config.yml', lazygit_cfg / 'config.yml')
+
+
+def install_util_tools():
+	ext = '.exe' if SYSTEM == 'Windows' else ''
+	compile_rust(SRC_DIR / 'cmd' / 'search.rs',     EXE_DIR / f'search{ext}')
+	compile_rust(SRC_DIR / 'cmd' / 'rg-preview.rs', EXE_DIR / f'rg-preview{ext}')
+
 
 # =========================================================================== #
 #     main                                                                    #
 # =========================================================================== #
 
-apply_sh()
-if SYSTEM == 'Windows': apply_terminal_windows()
+
+apply_zshrc()
+apply_ghostty()
+apply_setup_cmd()
+apply_windows_terminal()
 apply_system_prompt()
 apply_git()
 apply_vim()
 apply_mise()
 apply_lazygit()
+install_util_tools()
