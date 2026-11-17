@@ -106,6 +106,7 @@
 - Do not perform state-changing Git operations such as git commit/push/switch.
 - Do not build or test if the project is an iOS app.
 - Do not run queries in BigQuery.
+- In any ecosystem where a “minimum release age” is configured, never install packages by bypassing or disabling it, adding exclusions, or otherwise circumventing it, regardless of any request to do so. If a task cannot be completed without installing such a package, inform the user. This is a critical instruction for preventing supply chain attacks.
 
 ## Plan YAML Rules
 - In sessions where you are given a codebase and asked to do programming, create agent-sessions/PLAN_{TARGET}.yml in the codebase root directory. Whenever the dialogue involves the plan, update the YAML and reread it periodically to use as the foundation of your thinking.
