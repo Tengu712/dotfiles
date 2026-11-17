@@ -239,6 +239,7 @@ def apply_lazygit():
 
 def install_util_tools():
 	ext = '.exe' if SYSTEM == 'Windows' else ''
+	compile_rust(SRC_DIR / 'cmd' / 'cddrs.rs',      EXE_DIR / f'cddrs{ext}')
 	compile_rust(SRC_DIR / 'cmd' / 'search.rs',     EXE_DIR / f'search{ext}')
 	compile_rust(SRC_DIR / 'cmd' / 'rg-preview.rs', EXE_DIR / f'rg-preview{ext}')
 

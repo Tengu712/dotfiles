@@ -15,6 +15,17 @@ function rbg() {
 }
 alias tc='tee >(pbcopy)'
 
+# Change Directory
+function cdd() {
+	if [ "$#" -eq 1 ]; then
+		local target
+		target=$(command cddrs "$@") || return $?
+		builtin cd -- "$target"
+	else
+		command cddrs "$@"
+	fi
+}
+
 # Search
 alias af='search af'
 alias ag='search ag'
