@@ -216,6 +216,10 @@ def apply_vim():
 		'https://github.com/lambdalisue/vim-fern-renderer-nerdfont',
 		vim_rtp / 'pack' / 'plugins' / 'start' / 'vim-fern-renderer-nerdfont',
 	)
+	clone_git(
+		'https://github.com/airblade/vim-gitgutter',
+		vim_rtp / 'pack' / 'plugins' / 'start' / 'vim-gitgutter',
+	)
 
 
 def apply_mise():

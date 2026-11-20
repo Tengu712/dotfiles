@@ -4,6 +4,7 @@ set clipboard+=unnamed
 set mouse=
 set cursorline
 set cursorlineopt=number
+set number
 set re=0
 set shiftwidth=4
 set tabstop=4
@@ -36,6 +37,8 @@ highlight Comment        cterm=NONE ctermfg=244
 highlight SpecialComment cterm=NONE ctermfg=244
 highlight VimLineComment cterm=NONE ctermfg=244
 "" others
+highlight LineNr         cterm=NONE ctermfg=244
+highlight CursorLineNr   cterm=NONE ctermfg=252
 highlight IncSearch      cterm=NONE ctermfg=0   ctermbg=255
 highlight SignColumn     cterm=NONE             ctermbg=NONE
 
@@ -78,6 +81,7 @@ command! Colors call ShowColors()
 
 " Third-party Plugins
 runtime fern.vim
+runtime gitgutter.vim
 
 " Self-made Plugins
 runtime line-jumper/script.vim
